@@ -56,4 +56,11 @@ exports.loginUser = passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-})
+});
+
+// Déconnexion de l'utilisateur
+
+exports.logoutUser = (req, res) => {
+    req.logOut();
+    res.redirect('/login');
+}

@@ -1,5 +1,5 @@
 const mongoose = require ('mongoose');
-
+const bcrypt = require ('bcrypt');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -16,4 +16,15 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema); //on l'exporte pour pouvoir l'appeler ailleurs dans l'application
+
+// Méthode pour comparer les mots de passes
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  try {
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+  } catch (error) {
+    throw error;
+  }    
+}
+
+module.exports = mongoose.model('User', userSchema); // On l'exporte pour pouvoir l'appeler ailleurs dans l'application
