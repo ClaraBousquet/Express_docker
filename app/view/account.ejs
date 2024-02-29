@@ -1,0 +1,39 @@
+<%- include('./templates/header') %>
+<%- include('./templates/navbar') %>
+
+<div class="container mt-5">
+
+<h1>Mon Compte</h1>
+
+<h2><%= user.email %></h2>
+<h2><%= user.name %></h2>
+
+ <form action="/users/edit" method="POST">
+    <div class="form-group">
+      <label for="email" placeholder="<%= user.email %>">Email</label>
+      <input type="email" name="title" class="form-control" required>
+    </div>
+   <div class="form-group">
+      <label for="name" placeholder="<%= user.name %>">Nom</label>
+      <input type="text" name="title" class="form-control" required>
+    </div>
+
+ <div class="form-group">
+      <label for="title">Ancien mot de passe</label>
+      <input type="password" name="title" class="form-control" required>
+    </div>
+
+     <div class="form-group">
+      <label for="title">Nouveau Mot de passe</label>
+      <input type="password" name="title" class="form-control" required>
+    </div>
+
+     <div class="form-group">
+      <label for="title">Confirmation du nouveau mot de passe</label>
+      <input type="password" name="title" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 form-control">Enregistrer</button>
+  </form>
+</div>
+<%- include('./templates/footer') %>
