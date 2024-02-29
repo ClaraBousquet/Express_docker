@@ -1,11 +1,70 @@
-const passport = require('../passport-config');
-const User = require('../model/userScheme');
-const bcrypt = require('bcrypt');
+const Post = require('../model/postScheme');
 
+// Méthode pour afficher la page d'accueil
+exports.showHome = async (req, res) => {
+  try {
+    //  On récupère l'id de l'utilisateur connecté
+    const userId = req.user._id;
 
+    //  On récupère tous les posts de l'utilisateur connecté
+    const userPosts = await Post.find({ author: userId }).sort({ created_at: 'desc' });
 
-// Affiche la route accueil
+    //  On renvois la vue accueil avec les posts de l'utilisateur connecté
+    res.render('accueil', { userPosts });
 
-exports.showHome = (req, res) => {
-    res.render('accueil');
-};                       
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Méthode pour afficher le formulaire de création de post
+exports.showAddPost = (req, res) => {
+  res.render('post/add', { error: null });
+};
+
+// Méthode pour ajouter un post
+exports.addPost = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    //  On récupère l'id de l'utilisateur connecté
+    const author = req.user._id;
+
+    //  On crée l'objet post
+    const newPost = new Post({
+      title: title,
+      content: content,
+      author: author,
+      created_at: new Date(),
+    });
+
+    // On sauvegarde le postm
+    await newPost.save();
+
+    // On redirige l'utilisateur vers la page d'accueil
+    res.redirect('/');
+  } catch (error) {
+    // On redirige sur le formulaire de création de post avec un message d'erreur
+    res.render('post/add', { error: 'Une erreur est survenue, veuillez réessayer.' })
+  }
+};
+
+// Méthode pour afficher le formulaire de modification de post
+exports.showEditPost = async (req, res) => {
+  try {
+    // On récupère l'id du post
+    const postId = req.params.id;
+
+    // On récupère les données du post grace à son id
+    const post = await Post.findById(postId);
+
+    // On vérifie si l'utilisateur est l'auteur du post
+    if(post.author.equals(req.user._id)){
+      // On renvois la vue de modification de post avec les données du post
+      res.render('post/edit', { post });
+    }else{
+      res.redirect('/');
+    }
+  } catch (error) {
+    res.render('post/edit', { error: 'Une erreur est survenue, veuillez réessayer.' });
+  }
+};

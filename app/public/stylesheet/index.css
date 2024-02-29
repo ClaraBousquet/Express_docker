@@ -2,3 +2,8 @@ h1{
     color: rgb(187, 19, 145) !important;
 }
 
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}

@@ -1,5 +1,34 @@
 <%- include('./templates/header') %>
+<%- include('./templates/navbar') %>
+<div class="d-flex flex-column align-items-center">
+  <h1>Accueil</h1>
+  <div class="d-flex flex-wrap justify-content-start">
+    <% if(userPosts.length >0 ){ %>
+    <% userPosts.forEach(post => { %>
+    <div class="card m-3" style="width:20rem;">
+      <div class="card-body">
+        <h5 class="card-title"><%= post.title %></h5>
+        <p class="card-text"><%= post.content %></p>
+        <p class="card-text">
+          Crée le <%= post.created_at.toLocaleDateString() %> à <%= post.created_at.toLocaleTimeString() %>
+        </p>
+        <p class="card-text">
+          Modifié le <%= post.updated_at.toLocaleDateString() %> à <%= post.updated_at.toLocaleTimeString() %>
+        </p>
+      </div>
+      <!-- Boutons pour modifier ou supprimer -->
+      <div class="card-footer d-flex justify-content-center">
+        <a href="/posts/edit/<%= post._id %>" class="btn btn-warning m-2">Modifier</a>
+        <a href="#" class="btn btn-danger m-2">Supprimer</a>
+      </div>
+    </div>
+    <% }); %>
+    <% }else{ %>
+    <h2>Il n'y a pas de post pour le moment</h2>
+    <a href="/posts/add" class="btn btn-primary mt-3">Créer ton premier post!</a>
+    <% } %>
+  </div>
 
-<h1>Accueil</h1>
+</div>
 
 <%- include('./templates/footer') %>
